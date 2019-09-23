@@ -1,5 +1,7 @@
 # Makefile for parallel simulated annealer
 GPROFFLAGS = -pg
+VECTORIZEFLAGS=  -ftree-vectorize -ftree-vectorizer-verbose=1
+#VECTORIZEFLAGS=  -ftree-vectorize -fopt-info-vec-missed -O2
 PREFIX=${PARSECDIR}/pkgs/kernels/canneal/inst/${PARSECPLAT}
 
 TARGET=canneal
@@ -12,12 +14,12 @@ ifdef version
 endif
 
 all:
-	$(CXX) $(CXXFLAGS) annealer_thread.cpp -c -o annealer_thread.o
-	$(CXX) $(CXXFLAGS) rng.cpp -c -o rng.o
-	$(CXX) $(CXXFLAGS) netlist.cpp -c -o netlist.o
-	$(CXX) $(CXXFLAGS) main.cpp -c -o main.o
-	$(CXX) $(CXXFLAGS) netlist_elem.cpp -c -o netlist_elem.o
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) *.o $(LIBS) -o $(TARGET)
+	$(CXX) $(CXXFLAGS) $(VECTORIZEFLAGS) annealer_thread.cpp -c -o annealer_thread.o
+	$(CXX) $(CXXFLAGS) $(VECTORIZEFLAGS) rng.cpp -c -o rng.o
+	$(CXX) $(CXXFLAGS) $(VECTORIZEFLAGS) netlist.cpp -c -o netlist.o
+	$(CXX) $(CXXFLAGS) $(VECTORIZEFLAGS) main.cpp -c -o main.o
+	$(CXX) $(CXXFLAGS) $(VECTORIZEFLAGS) netlist_elem.cpp -c -o netlist_elem.o
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(VECTORIZEFLAGS) *.o $(LIBS) -o $(TARGET)
 prof:
 	$(CXX) $(CXXFLAGS) $(GPROFFLAGS) annealer_thread.cpp -c -o annealer_thread.o
 	$(CXX) $(CXXFLAGS) $(GPROFFLAGS) rng.cpp -c -o rng.o
