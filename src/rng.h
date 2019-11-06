@@ -43,9 +43,10 @@ class Rng
 public:
 	Rng() {
 #ifdef ENABLE_THREADS
-		pthread_mutex_lock(&seed_lock);
-		_rng = new MTRand(seed++);
-		pthread_mutex_unlock(&seed_lock);
+		#pragma omp critical
+		{
+			_rng = new MTRand(seed++);
+		}
 #else
 		_rng = new MTRand(seed++);
 #endif //ENABLE_THREADS
