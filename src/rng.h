@@ -31,10 +31,6 @@
 
 #include <vector>
 
-#ifdef ENABLE_THREADS
-#include <pthread.h>
-#endif
-
 #include "MersenneTwister.h"
 
 class Rng
