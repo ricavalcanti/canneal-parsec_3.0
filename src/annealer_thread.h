@@ -27,13 +27,8 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 
-
 #ifndef ANNEALER_THREAD_H
 #define ANNEALER_THREAD_H
-
-#ifdef ENABLE_THREADS
-#include <pthread.h>
-#endif
 
 #include <assert.h>
 
@@ -42,56 +37,44 @@
 #include "netlist_elem.h"
 #include "rng.h"
 
-class annealer_thread 
+class annealer_thread
 {
 public:
-	enum move_decision_t{
+	enum move_decision_t
+	{
 		move_decision_accepted_good,
 		move_decision_accepted_bad,
 		move_decision_rejected
 	};
 
 	annealer_thread(
-		netlist* netlist,
-		int nthreads,
-		int swaps_per_temp,
-		int start_temp,
-		int number_temp_steps
-	)
-	:_netlist(netlist),
-	_keep_going_global_flag(true),
-	_moves_per_thread_temp(swaps_per_temp/nthreads),
-	_start_temp(start_temp),
-	_number_temp_steps(number_temp_steps)
+			netlist *netlist,
+			int nthreads,
+			int swaps_per_temp,
+			int start_temp,
+			int number_temp_steps)
+			: _netlist(netlist),
+				_keep_going_global_flag(true),
+				_moves_per_thread_temp(swaps_per_temp / nthreads),
+				_start_temp(start_temp),
+				_number_temp_steps(number_temp_steps)
 	{
 		assert(_netlist != NULL);
-#ifdef ENABLE_THREADS
-		pthread_barrier_init(&_barrier, NULL, nthreads);
-#endif
 	};
-	
-	~annealer_thread() {
-#ifdef ENABLE_THREADS
-		pthread_barrier_destroy(&_barrier);
-#endif
-	}					
+
 	void Run();
-					
+
 protected:
-	move_decision_t accept_move(routing_cost_t delta_cost, double T, Rng* rng);
-	routing_cost_t calculate_delta_routing_cost(netlist_elem* a, netlist_elem* b);
+	move_decision_t accept_move(routing_cost_t delta_cost, double T, Rng *rng);
+	routing_cost_t calculate_delta_routing_cost(netlist_elem *a, netlist_elem *b);
 	bool keep_going(int temp_steps_completed, int accepted_good_moves, int accepted_bad_moves);
 
 protected:
-	netlist* _netlist;		
+	netlist *_netlist;
 	bool _keep_going_global_flag;
 	int _moves_per_thread_temp;
 	int _start_temp;
 	int _number_temp_steps;
-#ifdef ENABLE_THREADS
-	pthread_barrier_t _barrier;
-#endif
 };
 
 #endif
-

@@ -26,7 +26,6 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 
-
 #ifndef RNG_H
 #define RNG_H
 
@@ -41,28 +40,25 @@
 class Rng
 {
 public:
-	Rng() {
-#ifdef ENABLE_THREADS
-		#pragma omp critical
+	Rng()
+	{
+#pragma omp critical
 		{
 			_rng = new MTRand(seed++);
 		}
-#else
-		_rng = new MTRand(seed++);
-#endif //ENABLE_THREADS
 	}
-	~Rng() {
+	~Rng()
+	{
 		delete _rng;
 	}
 	long rand();
 	long rand(int max);
 	double drand();
+
 protected:
 	//use same random seed for each run
 	static unsigned int seed;
-	static pthread_mutex_t seed_lock;
 	MTRand *_rng;
 };
 
 #endif
-
