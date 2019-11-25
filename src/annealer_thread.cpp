@@ -91,7 +91,7 @@ void annealer_thread::Run()
 			}
 		}
 		temp_steps_completed++;
-#pragma omp taskwait
+#pragma omp barrier
 	}
 }
 

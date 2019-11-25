@@ -103,8 +103,9 @@ int main(int argc, char *const argv[])
 #endif
 
 #pragma omp parallel num_threads(num_threads)
-#pragma omp task
-	a_thread.Run();
+	{
+		a_thread.Run();
+	}
 
 #ifdef ENABLE_PARSEC_HOOKS
 	__parsec_roi_end();
