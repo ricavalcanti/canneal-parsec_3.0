@@ -46,7 +46,7 @@ using std::endl;
 void annealer_thread::Run()
 {
 
-	cout << "Thread " << omp_get_thread_num() << endl;
+	//cout << "Thread " << omp_get_thread_num() << endl;
 	int accepted_good_moves = 0;
 	int accepted_bad_moves = -1;
 	double T = _start_temp;

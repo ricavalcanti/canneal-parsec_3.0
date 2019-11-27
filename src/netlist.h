@@ -26,7 +26,6 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 
-
 #ifndef NETLIST_H
 #define NETLIST_H
 
@@ -45,30 +44,27 @@ class Rng;
 class netlist
 {
 public:
-	netlist(const std::string& filename); //ctor
-	void get_random_pair(netlist_elem** a, netlist_elem** b, Rng* rng); // will return an element that we have a valid mutex on
-	void swap_locations(netlist_elem* elem_a, netlist_elem* elem_b);
-	void shuffle(Rng* rng);
-	netlist_elem* netlist_elem_from_loc(location_t& loc);
-	netlist_elem* netlist_elem_from_name(std::string& name);
-	routing_cost_t total_routing_cost();
-	void print_locations(const std::string& filename);
-	void release(netlist_elem* elem);
-	netlist_elem* get_random_element(long* elem_id, long different_from, Rng* rng);
-	
+	netlist(const std::string &filename);																//ctor
+	void get_random_pair(netlist_elem **a, netlist_elem **b, Rng *rng); // will return an element that we have a valid mutex on
+	void swap_locations(netlist_elem *elem_a, netlist_elem *elem_b);
+	void shuffle(Rng *rng);
+	netlist_elem *netlist_elem_from_loc(location_t &loc);
+	netlist_elem *netlist_elem_from_name(std::string &name);
+	routing_cost_t total_routing_cost(int threads);
+	void print_locations(const std::string &filename);
+	void release(netlist_elem *elem);
+	netlist_elem *get_random_element(long *elem_id, long different_from, Rng *rng);
+
 protected:
 	unsigned _num_elements;
 	unsigned _max_x;
 	unsigned _max_y;
 	unsigned _chip_size;
-	std::vector<netlist_elem> _elements;//store the actual elements here
-	std::vector< std::vector<location_t> > _locations;//store the actual locations here
-	std::map<std::string, netlist_elem*> _elem_names;
-	netlist_elem* create_elem_if_necessary(std::string& name);
+	std::vector<netlist_elem> _elements;						 //store the actual elements here
+	std::vector<std::vector<location_t>> _locations; //store the actual locations here
+	std::map<std::string, netlist_elem *> _elem_names;
+	netlist_elem *create_elem_if_necessary(std::string &name);
 	//due to the pointers, perhaps I should make the copy operator protected to prevent copying
 };
 
-
-
 #endif
-
