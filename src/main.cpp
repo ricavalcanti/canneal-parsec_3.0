@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <vector>
+#include<omp.h>
 
 #ifdef ENABLE_PARSEC_HOOKS
 #include <hooks.h>
@@ -101,7 +102,7 @@ int main(int argc, char *const argv[])
 #ifdef ENABLE_PARSEC_HOOKS
 	__parsec_roi_begin();
 #endif
-
+double inicio = omp_get_wtime();
 #pragma omp parallel num_threads(num_threads)
 	{
 		a_thread.Run();
@@ -112,7 +113,8 @@ int main(int argc, char *const argv[])
 #endif
 
 	cout << "Final routing is: " << my_netlist.total_routing_cost() << endl;
-
+	double final = omp_get_wtime();
+	cout << "Tempo:" << final - inicio << endl;
 #ifdef ENABLE_PARSEC_HOOKS
 	__parsec_bench_end();
 #endif
