@@ -32,7 +32,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <vector>
-#include<omp.h>
+#include <omp.h>
+#include <time.h>
 
 #ifdef ENABLE_PARSEC_HOOKS
 #include <hooks.h>
@@ -53,10 +54,10 @@ int main(int argc, char *const argv[])
 #define __PARSEC_STRING(x) #x
 #define __PARSEC_XSTRING(x) __PARSEC_STRING(x)
 	cout << "PARSEC Benchmark Suite Version "__PARSEC_XSTRING(PARSEC_VERSION) << endl
-			 << flush;
+		 << flush;
 #else
 	cout << "PARSEC Benchmark Suite" << endl
-			 << flush;
+		 << flush;
 #endif //PARSEC_VERSION
 #ifdef ENABLE_PARSEC_HOOKS
 	__parsec_bench_begin(__parsec_canneal);
@@ -102,7 +103,8 @@ int main(int argc, char *const argv[])
 #ifdef ENABLE_PARSEC_HOOKS
 	__parsec_roi_begin();
 #endif
-double inicio = omp_get_wtime();
+	// double inicio = omp_get_wtime();
+	clock_t inicio = clock();
 #pragma omp parallel num_threads(num_threads)
 	{
 		a_thread.Run();
@@ -113,8 +115,9 @@ double inicio = omp_get_wtime();
 #endif
 
 	cout << "Final routing is: " << my_netlist.total_routing_cost() << endl;
-	double final = omp_get_wtime();
-	cout << "Tempo:" << final - inicio << endl;
+	// double final = omp_get_wtime();
+	clock_t final = clock();
+	cout << "Tempo:" << (double)(final - inicio) / CLOCKS_PER_SEC << endl;
 #ifdef ENABLE_PARSEC_HOOKS
 	__parsec_bench_end();
 #endif
