@@ -12,12 +12,12 @@ ifdef version
 endif
 
 all:
-	$(CXX) $(CXXFLAGS) annealer_thread.cpp -c -o annealer_thread.o
-	$(CXX) $(CXXFLAGS) rng.cpp -c -o rng.o
-	$(CXX) $(CXXFLAGS) netlist.cpp -c -o netlist.o
-	$(CXX) $(CXXFLAGS) main.cpp -c -o main.o
-	$(CXX) $(CXXFLAGS) netlist_elem.cpp -c -o netlist_elem.o
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) *.o $(LIBS) -o $(TARGET)
+	$(CXX) -fopenmp $(CXXFLAGS) annealer_thread.cpp -c -o annealer_thread.o
+	$(CXX) -fopenmp $(CXXFLAGS) rng.cpp -c -o rng.o
+	$(CXX) -fopenmp $(CXXFLAGS) netlist.cpp -c -o netlist.o
+	$(CXX) -fopenmp $(CXXFLAGS) main.cpp -c -o main.o
+	$(CXX) -fopenmp $(CXXFLAGS) netlist_elem.cpp -c -o netlist_elem.o
+	$(CXX) -fopenmp $(CXXFLAGS) $(LDFLAGS) *.o $(LIBS) -o $(TARGET)
 prof:
 	$(CXX) $(CXXFLAGS) $(GPROFFLAGS) annealer_thread.cpp -c -o annealer_thread.o
 	$(CXX) $(CXXFLAGS) $(GPROFFLAGS) rng.cpp -c -o rng.o
